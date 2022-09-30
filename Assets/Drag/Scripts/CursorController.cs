@@ -46,7 +46,9 @@ public class CursorController : MonoBehaviour
 
         Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         draggedItem.transform.position = mousePos + dragOffset;
+
     }
+
     private void EndDragging()
     {
         if (draggedItem != null && Input.GetMouseButtonUp(0))

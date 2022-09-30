@@ -67,10 +67,7 @@ public class KnobRotationController : MonoBehaviour
         float nextRotationUnitAmmount = (unitDifference * unitMultiplier) / unitPerRotation + rotationUnitAmmount;
         return nextRotationUnitAmmount;
     }
-    private static float ConvertToAngle(float signedAngle)
-    {
-        return (signedAngle > 0) ? -signedAngle : -signedAngle;
-    }
+    private static float ConvertToAngle(float signedAngle) => -signedAngle;
     private float ConvertToRotationUnit(float value)
     {
         value = Mathf.Round(value / unitPerRotation) * unitPerRotation;
