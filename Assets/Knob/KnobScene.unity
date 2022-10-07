@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 326427238}
+  - component: {fileID: 326427240}
   - component: {fileID: 326427239}
   m_Layer: 0
   m_Name: Knob
@@ -171,10 +172,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knobTransform: {fileID: 344148750}
   canvasController: {fileID: 1472386124}
-  oneTimeRotationLimit: 30
-  unitPerRotation: 18
-  unitPerTwist: 100
-  maxTwistAmmount: 3
+  stepPerTurn: 0
+  unitPerTurn: 0
+  maxTurnAmmount: 0
+--- !u!114 &326427240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326427237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2dfba90c4f0ad74c992a22716853905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knobTransform: {fileID: 344148750}
+  rotationController: {fileID: 326427239}
+  oneTimeRotationLimit: 0
 --- !u!1 &344148749
 GameObject:
   m_ObjectHideFlags: 0
