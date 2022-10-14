@@ -27,7 +27,7 @@ public class RotationController : MonoBehaviour
         float signedAngle = _value;
         float targetRotation = RoundToAngleUnit(signedAngle);
 
-        float nextUnitAmmount = rotationUnitAmmount + CalculateUnitAmmountFromAngle(targetRotation);
+        float nextUnitAmmount = rotationUnitAmmount + CalculateUnitDifference(targetRotation);
 
         if (CanRotate(nextUnitAmmount))
         {
@@ -37,7 +37,7 @@ public class RotationController : MonoBehaviour
             rotationUnitAmmount = nextUnitAmmount;
         }
     }
-    private float CalculateUnitAmmountFromAngle(float value)
+    private float CalculateUnitDifference(float value)
     {    
         Vector2 currentAngleVector = Quaternion.Euler(0f, 0f, value) * Vector3.up;
         Vector2 previousAngleVector = Quaternion.Euler(0f, 0f, previousAngle) * Vector3.up;
@@ -47,10 +47,10 @@ public class RotationController : MonoBehaviour
 
         return differenceInUnit;
     }
-    private static float ConvertToSimpleAngle(float signedAngle)
-    {
-        return (signedAngle > 0) ? 360 - signedAngle : -signedAngle;
-    }
+    //private static float ConvertToSimpleAngle(float signedAngle)
+    //{
+    //    return (signedAngle > 0) ? 360 - signedAngle : -signedAngle;
+    //}
     private float ConvertToUnit(float value) => unitPerTurn / (360f / value);
     private float RoundToAngleUnit(float value)
     {
