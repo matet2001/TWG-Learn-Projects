@@ -26,12 +26,13 @@ public class RotationInputManager : MonoBehaviour
     {
         if (!isDrag) return;
 
-        Vector2 lookVector = GetLookVector();
+        Vector2 lookVector = GetLookVector();  
         float difference = CalculateSignedDifference(lookVector);
 
         if (CanRotate(difference))
         {
-            rotationController.Value = lookVector;
+            float signedAngle = CalculateSignedAngle(lookVector);
+            rotationController.Value = signedAngle;
         } 
     }
     private void SetIsDrag()
@@ -58,5 +59,9 @@ public class RotationInputManager : MonoBehaviour
     private float CalculateSignedDifference(Vector2 lookVector)
     {
         return Vector2.SignedAngle(knobTransform.up, lookVector);
+    }
+    private float CalculateSignedAngle(Vector2 lookVector)
+    {
+        return Vector2.SignedAngle(Vector2.up, lookVector);
     }
 }
