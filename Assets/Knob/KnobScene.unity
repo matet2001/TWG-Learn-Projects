@@ -172,9 +172,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knobTransform: {fileID: 344148750}
   canvasController: {fileID: 1472386124}
-  stepPerTurn: 0
-  unitPerTurn: 0
-  maxTurnAmmount: 0
+  stepPerTurn: 20
+  unitPerTurn: 100
+  maxTurnAmmount: 3
 --- !u!114 &326427240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knobTransform: {fileID: 344148750}
   rotationController: {fileID: 326427239}
-  oneTimeRotationLimit: 0
+  oneTimeRotationLimit: 90
 --- !u!1 &344148749
 GameObject:
   m_ObjectHideFlags: 0
