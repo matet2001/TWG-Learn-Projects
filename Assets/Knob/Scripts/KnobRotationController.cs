@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotationKnobController : MonoBehaviour
+public class KnobRotationController : MonoBehaviour
 {
     public float _value;
     public float Value 

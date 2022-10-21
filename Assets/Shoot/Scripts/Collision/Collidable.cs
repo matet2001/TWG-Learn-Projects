@@ -4,9 +4,9 @@ using UnityEngine;
 
 public abstract class Collidable : MonoBehaviour
 {
-    public float radius;
+    public float radius { get; protected set;}
     public float speed;
-    public Vector2 direction;
+    public Vector2 direction { get; protected set; }
 
     public void Awake()
     {
@@ -15,7 +15,7 @@ public abstract class Collidable : MonoBehaviour
     public abstract void Collision(Transform transform);
     public void Move()
     {
-        Vector2 moveVector = direction * speed;
+        Vector2 moveVector = direction * speed * Time.deltaTime;
         transform.position += new Vector3(moveVector.x, moveVector.y);
     }
 }

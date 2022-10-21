@@ -1,12 +1,8 @@
 using UnityEngine;
 
-public class EventBasedRotationInputManager : MonoBehaviour
+public class GunRotationMouseInput : MonoBehaviour
 {
     private Camera mainCamera;
-
-    [SerializeField] Transform targetTransform;
-
-    [SerializeField] int oneTimeRotationLimit;
 
     private float previousAngle;
     private bool isDrag;
@@ -18,24 +14,12 @@ public class EventBasedRotationInputManager : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        OnDragStart += AdvancedRotationInputManager_OnDragStart;
+        OnDragStart += GunRotationMouseInput_OnDragStart;
     }
     private void Update()
     {
         SetIsDrag();
         ManageInput();
-    }
-    private void ManageInput()
-    {
-        if (!isDrag) return;
-
-        float signedAngle = CalculateSignedAngle();
-
-        if (CanRotate(CalculateSignedDifference()) && previousAngle != signedAngle)
-        {
-            OnAngleChange?.Invoke(signedAngle);
-            previousAngle = signedAngle;
-        } 
     }
     private void SetIsDrag()
     {
@@ -44,12 +28,17 @@ public class EventBasedRotationInputManager : MonoBehaviour
         if (Input.GetMouseButton(0) && !isDrag)
             OnDragStart?.Invoke(CalculateSignedAngle());
     }
-    private bool CanRotate(float difference)
+    private void ManageInput()
     {
-        if (!isDrag) return false;
-        if (Mathf.Abs(difference) > oneTimeRotationLimit) return false;
+        if (!isDrag) return;
 
-        return true;
+        float signedAngle = CalculateSignedAngle();
+
+        if (previousAngle != signedAngle)
+        {
+            OnAngleChange?.Invoke(signedAngle);
+            previousAngle = signedAngle;
+        } 
     }
     private Vector2 GetLookVector()
     {
@@ -57,17 +46,12 @@ public class EventBasedRotationInputManager : MonoBehaviour
         Vector2 lookVector = mousePosition - (Vector2)transform.position;
         return lookVector;
     }
-    private float CalculateSignedDifference()
-    {
-        Vector2 lookVector = GetLookVector();
-        return Vector2.SignedAngle(targetTransform.up, lookVector);
-    }
     private float CalculateSignedAngle()
     {
         Vector2 lookVector = GetLookVector();
         return Vector2.SignedAngle(Vector2.up, lookVector);
     }
-    private void AdvancedRotationInputManager_OnDragStart(float value)
+    private void GunRotationMouseInput_OnDragStart(float value)
     {
         isDrag = true;
     }

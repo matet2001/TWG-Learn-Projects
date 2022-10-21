@@ -8,7 +8,7 @@ public class RotationMouseInput : MonoBehaviour
     private Camera mainCamera;
 
     [SerializeField] Transform knobTransform;
-    [SerializeField] RotationKnobController rotationController;
+    [SerializeField] KnobRotationController rotationController;
 
     [SerializeField] int oneTimeRotationLimit;
     private bool isDrag;
@@ -30,11 +30,10 @@ public class RotationMouseInput : MonoBehaviour
 
         Vector2 lookVector = GetLookVector();
 
-        if (!shouldRelativeToMouse)
-            TryRotate(lookVector);
-        else
-            TryRotateRelative(lookVector);
+        if (!shouldRelativeToMouse) TryRotate(lookVector);
+        else TryRotateRelative(lookVector);
     }
+
     private void TryRotate(Vector2 lookVector)
     {
         float difference = CalculateSignedDifference(lookVector);

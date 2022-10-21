@@ -15,10 +15,11 @@ public class ProjectileController : Collidable
             DestroyProjectile();
         }           
     }
-    private void DestroyProjectile()
+    public void DestroyProjectile()
     {
         CollisionManager.Instance.RemoveFromCollidableList(this);
         Destroy(gameObject);
     }
     public void SetDirection(Vector2 direction) => this.direction = direction;
+    public void SetSpeed(float speed) => this.speed = speed;
 }

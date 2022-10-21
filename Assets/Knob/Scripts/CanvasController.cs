@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CanvasController : MonoBehaviour
 {
     [SerializeField] Text angleText;
-    [SerializeField] RotationKnobController rotationController;
+    [SerializeField] KnobRotationController rotationController;
 
     private void Start()
     {

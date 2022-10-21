@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KnobRotationSetter : MonoBehaviour
 {
-    [SerializeField] RotationKnobController rotationController;
+    [SerializeField] KnobRotationController rotationController;
 
     private void Start()
     {
