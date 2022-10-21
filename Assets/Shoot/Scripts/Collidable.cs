@@ -10,7 +10,7 @@ public abstract class Collidable : MonoBehaviour
 
     public void Awake()
     {
-        radius = GetComponent<SpriteRenderer>().bounds.extents.y;
+        radius = GetComponent<SpriteRenderer>().bounds.extents.x;
     }
     public abstract void Collision(Transform transform);
     public void Move()

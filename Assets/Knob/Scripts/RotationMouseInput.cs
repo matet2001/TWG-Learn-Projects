@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class RotationInputManager : MonoBehaviour
+public class RotationMouseInput : MonoBehaviour
 {
     private Camera mainCamera;
 
     [SerializeField] Transform knobTransform;
-    [SerializeField] RotationController rotationController;
+    [SerializeField] RotationKnobController rotationController;
 
     [SerializeField] int oneTimeRotationLimit;
     private bool isDrag;
+    [SerializeField] bool shouldRelativeToMouse;
+    private Vector2 dragStartMouseVector, dragStartRotationVector;
 
     private void Start()
     {
@@ -26,21 +28,33 @@ public class RotationInputManager : MonoBehaviour
     {
         if (!isDrag) return;
 
-        Vector2 lookVector = GetLookVector();  
+        Vector2 lookVector = GetLookVector();
+
+        if (!shouldRelativeToMouse)
+            TryRotate(lookVector);
+        else
+            TryRotateRelative(lookVector);
+    }
+    private void TryRotate(Vector2 lookVector)
+    {
         float difference = CalculateSignedDifference(lookVector);
 
         if (CanRotate(difference))
         {
             float signedAngle = CalculateSignedAngle(lookVector);
             rotationController.Value = signedAngle;
-        } 
+        }
     }
     private void SetIsDrag()
     {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue);
-        if (raycastHit.transform == knobTransform) isDrag = true;
-
+        if (raycastHit.transform == knobTransform && !isDrag)
+        {
+            isDrag = true;
+            dragStartMouseVector = GetLookVector();
+            dragStartRotationVector = Quaternion.Euler(0f, 0f, knobTransform.localEulerAngles.z) * Vector2.up;
+        }
         if (!Input.GetMouseButton(0)) isDrag = false;
     }
     private bool CanRotate(float difference)
@@ -63,5 +77,12 @@ public class RotationInputManager : MonoBehaviour
     private float CalculateSignedAngle(Vector2 lookVector)
     {
         return Vector2.SignedAngle(Vector2.up, lookVector);
+    }
+    private void TryRotateRelative(Vector2 lookVector)
+    {
+        float difference = Vector2.SignedAngle(dragStartMouseVector, lookVector);
+        float currentRotation = CalculateSignedAngle(dragStartRotationVector);
+
+        rotationController.Value = difference + currentRotation;
     }
 }

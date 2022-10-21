@@ -167,11 +167,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 326427237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a208c40010e58144bad213304a5de26, type: 3}
+  m_Script: {fileID: 11500000, guid: fd8da989bdeab0c41a663c5aefbaebbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knobTransform: {fileID: 344148750}
-  canvasController: {fileID: 1472386124}
+  _value: 0
   stepPerTurn: 20
   unitPerTurn: 100
   maxTurnAmmount: 3
@@ -190,6 +189,7 @@ MonoBehaviour:
   knobTransform: {fileID: 344148750}
   rotationController: {fileID: 326427239}
   oneTimeRotationLimit: 90
+  shouldRelativeToMouse: 0
 --- !u!1 &344148749
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 344148750}
   - component: {fileID: 344148752}
   - component: {fileID: 344148753}
+  - component: {fileID: 344148754}
   m_Layer: 0
   m_Name: ForgroundImageKnob
   m_TagString: Untagged
@@ -288,6 +289,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4.3107605
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &344148754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344148749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0851a7f92382a464986e2da28d806dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationController: {fileID: 326427239}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angleText: {fileID: 1115192261}
+  rotationController: {fileID: 326427239}
 --- !u!114 &1472386125
 MonoBehaviour:
   m_ObjectHideFlags: 0

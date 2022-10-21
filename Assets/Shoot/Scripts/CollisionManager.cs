@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
-{  
-    private List<Collidable> collidableList;
+{
+    public static CollisionManager Instance;
 
-    private void Start()
+    private List<Collidable> collidableList;
+    [SerializeField] TargetController targetController;
+
+    private void Awake()
     {
-        collidableList.AddRange(FindObjectsOfType<Collidable>());
+        Instance = this;
+        collidableList = new List<Collidable>();
     }
     private void Update()
     {
@@ -16,12 +20,15 @@ public class CollisionManager : MonoBehaviour
     }
     private void CheckForCollision()
     {
+        if (collidableList.Count == 0) return;
+
         foreach (Collidable collidable in collidableList)
         {
             float radius = collidable.radius;
             Vector3 position = collidable.transform.position;
 
-            List<Collidable> newCollidableList = collidableList;
+            List<Collidable> newCollidableList = new List<Collidable>();
+            newCollidableList.AddRange(collidableList);
             newCollidableList.Remove(collidable);
 
             foreach (Collidable otherCollidable in newCollidableList)
@@ -29,7 +36,12 @@ public class CollisionManager : MonoBehaviour
                 float otherRadius = otherCollidable.radius;
                 Vector3 otherPosition = otherCollidable.transform.position;
 
-                if(Vector3.Distance(position, otherPosition) < radius + otherRadius)
+                float distance = Vector2.SqrMagnitude(otherPosition - position);
+                Debug.DrawLine(position, otherPosition, Color.white);
+                //Debug.DrawLine(position, position + new Vector3(distance, 0f), Color.red);
+
+
+                if (distance < radius + otherRadius)
                 {
                     collidable.Collision(otherCollidable.transform);
                     otherCollidable.Collision(collidable.transform);

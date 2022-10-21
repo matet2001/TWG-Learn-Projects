@@ -1,12 +1,9 @@
-using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class CanvasController : MonoBehaviour
+public class KnobRotationSetter : MonoBehaviour
 {
-    [SerializeField] Text angleText;
     [SerializeField] RotationKnobController rotationController;
 
     private void Start()
@@ -16,8 +13,6 @@ public class CanvasController : MonoBehaviour
 
     private void RotationController_OnRotationValueChange(float rotationToSet, float unitAmount)
     {
-        SetAngleText(unitAmount.ToString("0"));
+        transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, rotationToSet));
     }
-
-    public void SetAngleText(string textToSet) => angleText.text = textToSet;
 }
