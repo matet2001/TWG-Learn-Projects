@@ -40,6 +40,7 @@ public class CollisionManager : MonoBehaviour
 
         float targetRadius = targetCollidable.radius;
         Vector3 targetPosition = targetCollidable.transform.position;
+
         Vector2 distanceVector = targetPosition - position;
         float distance = distanceVector.magnitude;
 
@@ -49,7 +50,6 @@ public class CollisionManager : MonoBehaviour
             targetCollidable.Collision(projectile.transform);
             return true;
         }
-
         return false;
     }
     private bool DestroyOutOfCameraProjectiles(CollidableProjectile projectile)
