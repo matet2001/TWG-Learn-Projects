@@ -7,13 +7,13 @@ public class CollisionManager : MonoBehaviour
     public static CollisionManager Instance;
 
     private Camera mainCamera;
-    private List<Collidable> collidableList;
+    private List<CollidableProjectile> collidableList;
     [SerializeField] TargetCollidable targetCollidable;
 
     private void Awake()
     {
         Instance = this;
-        collidableList = new List<Collidable>();
+        collidableList = new List<CollidableProjectile>();
     }
     private void Start()
     {
@@ -27,13 +27,13 @@ public class CollisionManager : MonoBehaviour
     {
         if (collidableList.Count <= 0) return;
 
-        foreach (ProjectileController projectile in collidableList)
+        foreach (CollidableProjectile projectile in collidableList)
         {
             if(CheckForCollision(projectile)) return;
             if(DestroyOutOfCameraProjectiles(projectile)) return;
         }
     }
-    private bool CheckForCollision(ProjectileController projectile)
+    private bool CheckForCollision(CollidableProjectile projectile)
     {
         float radius = projectile.radius;
         Vector3 position = projectile.transform.position;
@@ -52,7 +52,7 @@ public class CollisionManager : MonoBehaviour
 
         return false;
     }
-    private bool DestroyOutOfCameraProjectiles(ProjectileController projectile)
+    private bool DestroyOutOfCameraProjectiles(CollidableProjectile projectile)
     {
         Vector3 position = projectile.transform.position;
         Vector3 collidableViewportPosition = mainCamera.WorldToViewportPoint(position);
@@ -63,6 +63,6 @@ public class CollisionManager : MonoBehaviour
         }
         return false;
     }
-    public void AddToCollidableList(Collidable collidable) => collidableList.Add(collidable);
-    public void RemoveFromCollidableList(Collidable collidable) => collidableList.Remove(collidable);
+    public void AddToCollidableList(CollidableProjectile collidable) => collidableList.Add(collidable);
+    public void RemoveFromCollidableList(CollidableProjectile collidable) => collidableList.Remove(collidable);
 }

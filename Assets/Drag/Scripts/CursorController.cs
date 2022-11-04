@@ -19,13 +19,18 @@ public class CursorController : MonoBehaviour
     }
     private void Update()
     {
+        HandleDrag();
+    }
+    private void HandleDrag()
+    {
         StartDragging();
         Dragging();
         EndDragging();
     }
     private void StartDragging()
     {
-        if (!Input.GetMouseButtonDown(0) || draggedItem != null) return;
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (draggedItem != null) return;
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue);
@@ -47,7 +52,6 @@ public class CursorController : MonoBehaviour
         Vector2 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         draggedItem.transform.position = mousePos + dragOffset;
     }
-
     private void EndDragging()
     {
         if (draggedItem != null && Input.GetMouseButtonUp(0))

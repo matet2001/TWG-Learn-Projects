@@ -5,7 +5,6 @@ using UnityEngine;
 public class GunShootController : MonoBehaviour
 {
     [SerializeField] GameObject projectilePrefab;
-    [SerializeField] CollisionManager collisionManager;
     [SerializeField] TargetPathController targetController;
 
     private Bounds spriteBounds;
@@ -31,7 +30,7 @@ public class GunShootController : MonoBehaviour
         newProjectileController.SetDirection(spriteLengthVectorRotated.normalized);
         newProjectileController.SetSpeed(CalculateProjectileSpeed());
 
-        collisionManager.AddToCollidableList(newProjectileController);
+        CollisionManager.Instance.AddToCollidableList(newProjectileController);
     }
 
     private Vector3 CalculateSpriteLengthVectorRotated()

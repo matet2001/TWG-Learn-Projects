@@ -19,3 +19,14 @@ public abstract class Collidable : MonoBehaviour
         transform.position += new Vector3(moveVector.x, moveVector.y);
     }
 }
+public abstract class CollidableProjectile : Collidable
+{
+    public void SetDirection(Vector2 direction) => this.direction = direction;
+    public void SetSpeed(float speed) => this.speed = speed;
+
+    public void DestroyProjectile()
+    {
+        CollisionManager.Instance.RemoveFromCollidableList(this);
+        Destroy(gameObject);
+    }
+}

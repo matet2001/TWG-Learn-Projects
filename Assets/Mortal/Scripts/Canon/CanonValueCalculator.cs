@@ -1,19 +1,21 @@
-using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static EventDelegateContainer;
 
 public class CanonValueCalculator : MonoBehaviour
 {
-    public event FloatSenderDelegate OnChargeValueChange;
-
     [SerializeField] CanonInputManager canonInputManager;
     [SerializeField] CanonCanvasController canonCanvasController;
 
+    public event Action<float> OnChargeValueChange;
+    public event Action<float> OnRotationValueChange;
+
     private bool isButtonPressed;
-    private float chargeValue, timeForFullCharge = 2f;
-    private int chargeIncreaseButton = 1;
+    private float chargeValue, previousChargeValue, timeForFullCharge = 2f;
+    private int chargeIncreaseButton = 0;
+
+    private float rotationValue;
 
     private void Start()
     {
@@ -23,34 +25,29 @@ public class CanonValueCalculator : MonoBehaviour
     {
         canonInputManager.OnMouseButtonPress += CanonInputManager_OnMouseButtonPress;
         canonInputManager.OnMouseButtonRelease += CanonInputManager_OnMouseButtonRelease;
-    }
+
+        canonInputManager.OnMousePositionChange += CanonInputManager_OnMousePositionChange;
+    }   
     private void Update()
     {
         CalculateChargeValue();
     }
+    #region ChargeValue
     private void CalculateChargeValue()
     {
         float chargeValuePerFrame = 1 / timeForFullCharge;
-        bool isValueChanged = false;
 
         if (isButtonPressed)
-        {
             chargeValue += chargeValuePerFrame * Time.deltaTime;
-            isValueChanged = true;
-            ChargeValueChange(chargeValue);
-        }
         if (!isButtonPressed)
-        {
             chargeValue -= chargeValuePerFrame * Time.deltaTime;
-            isValueChanged = true;
-        }
 
-        if (isValueChanged)
-        {
-            chargeValue = Mathf.Clamp(chargeValue, 0f, 1f);
+        chargeValue = Mathf.Clamp01(chargeValue);
+
+        if(chargeValue != previousChargeValue) 
             ChargeValueChange(chargeValue);
-        }
     }
+    public float GetChargeValue() => chargeValue;
     private void CanonInputManager_OnMouseButtonPress(int mouseButton)
     {
         if (mouseButton == chargeIncreaseButton) isButtonPressed = true;
@@ -61,7 +58,15 @@ public class CanonValueCalculator : MonoBehaviour
     }
     private void ChargeValueChange(float value)
     {
-        
-        OnChargeValueChange(value);
+        previousChargeValue = chargeValue;
+        OnChargeValueChange?.Invoke(value);
+    }
+    #endregion
+    private void CanonInputManager_OnMousePositionChange(float value)
+    {
+        rotationValue += value;
+        rotationValue = Mathf.Clamp01(rotationValue);
+
+        OnRotationValueChange?.Invoke(rotationValue);
     }
 }
