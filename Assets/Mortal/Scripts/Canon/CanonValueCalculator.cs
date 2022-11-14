@@ -35,12 +35,12 @@ public class CanonValueCalculator : MonoBehaviour
     #region ChargeValue
     private void CalculateChargeValue()
     {
-        float chargeValuePerFrame = 1 / timeForFullCharge;
+        float chargeValuePerFrame = 1 / timeForFullCharge * Time.deltaTime;
 
         if (isButtonPressed)
-            chargeValue += chargeValuePerFrame * Time.deltaTime;
+            chargeValue += chargeValuePerFrame;
         if (!isButtonPressed)
-            chargeValue -= chargeValuePerFrame * Time.deltaTime;
+            chargeValue -= chargeValuePerFrame;
 
         chargeValue = Mathf.Clamp01(chargeValue);
 

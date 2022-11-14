@@ -18,12 +18,11 @@ public abstract class Collidable : MonoBehaviour
         Vector2 moveVector = direction * speed * Time.deltaTime;
         transform.position += new Vector3(moveVector.x, moveVector.y);
     }
+    public void SetDirection(Vector2 direction) => this.direction = direction;
+    public void SetSpeed(float speed) => this.speed = speed;
 }
 public abstract class CollidableProjectile : Collidable
 {
-    public void SetDirection(Vector2 direction) => this.direction = direction;
-    public void SetSpeed(float speed) => this.speed = speed;
-
     public void DestroyProjectile()
     {
         CollisionManager.Instance.RemoveFromCollidableList(this);
