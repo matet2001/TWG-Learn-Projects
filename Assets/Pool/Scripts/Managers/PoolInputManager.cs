@@ -17,6 +17,10 @@ public class PoolInputManager : MonoBehaviour
 
     private void Start()
     {
+        SuscribeToEvents();
+    }
+    private void SuscribeToEvents()
+    {
         OnMouseClick += PoolInputManager_OnMouseClick;
         OnMouseRelease += PoolInputManager_OnMouseRelease;
 
@@ -25,10 +29,10 @@ public class PoolInputManager : MonoBehaviour
     }
     private void Update()
     {
-        InvokeEvents();
+        InvokeMouseClickEvents();
         LogMousePosition();
     }
-    private void InvokeEvents()
+    private void InvokeMouseClickEvents()
     {
         if(shouldReceiveInput)
         {

@@ -5,12 +5,13 @@ using UnityEngine;
 public class PoolCueController : MonoBehaviour
 {
     [SerializeField] PoolInputManager poolInputManager;
+
     private LineRenderer lineRenderer;
     private Camera mainCamera;
 
     [SerializeField] float distanceFromBall = 1f;
-    private bool isMouseButtonDown;
 
+    private bool isMouseButtonDown;
 
     private void Awake()
     {
@@ -20,6 +21,10 @@ public class PoolCueController : MonoBehaviour
         mainCamera = Camera.main;
     }
     private void Start()
+    {
+        SuscribeToEvents();
+    }
+    private void SuscribeToEvents()
     {
         poolInputManager.OnMouseClick += PoolInputManager_OnMouseClick;
         poolInputManager.OnMouseRelease += PoolInputManager_OnMouseRelease;
@@ -32,17 +37,18 @@ public class PoolCueController : MonoBehaviour
     {
         if (isMouseButtonDown)
         {
-            PoolBallController targetBall = PoolCollisionManager.Instance.targetBall;
+            PoolBallCollider targetBall = PoolCollisionManager.Instance.targetBall;
             Vector2 ballPosition = targetBall.transform.position;
             float ballRadius = targetBall.radius;
 
             Vector2 startPosition = mainCamera.ScreenToWorldPoint(PoolInputManager.mousePosition);
             Vector2 mouseBallVector = ballPosition - startPosition;
-            Vector2 distanceVector = mouseBallVector.normalized  * (ballRadius * distanceFromBall);
-            Vector2 endPosition = startPosition + mouseBallVector - distanceVector;
-
-            lineRenderer.SetPosition(0, startPosition + distanceVector);
-            lineRenderer.SetPosition(1, endPosition);     
+            Vector2 endPosition = startPosition + mouseBallVector;
+            
+            Vector2 minusDistanceVector = mouseBallVector.normalized * (ballRadius * distanceFromBall);
+            
+            lineRenderer.SetPosition(0, startPosition + minusDistanceVector);
+            lineRenderer.SetPosition(1, endPosition - minusDistanceVector);     
         }
     }
 

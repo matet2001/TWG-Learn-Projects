@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class PoolCanvasManager : MonoBehaviour
 {
+    [Header("Instance References")]
     [SerializeField] PoolInputManager poolInputManager;
-    [SerializeField] PoolShooter poolShooter;
+    [SerializeField] PoolShootController poolShooter;
     [SerializeField] PoolGameLoopController poolGameLoopController;
-
+    [Header("UI References")]
     [SerializeField] Slider poolChargeSlider;
     [SerializeField] TextMeshProUGUI gameOverText, gameOverTimerText;
     private Camera mainCamera;
-
+    [Header("Variables")]
     [SerializeField] float chargeSliderOffset;
 
     private bool isMouseButtonDown;
@@ -37,28 +38,27 @@ public class PoolCanvasManager : MonoBehaviour
     }
     private void Update()
     {
-        SetPoolChargeSliderValue();
-        SetSliderPosition();
+        ManageChargeSlider();
     }
+    private void ManageChargeSlider()
+    {
+        if (isMouseButtonDown)
+        {
+            SetPoolChargeSliderValue(poolShooter.chargeValue);
+            SetSliderPosition();
+        }
+    }
+
     private void SetSliderPosition()
-    {
-        if (isMouseButtonDown)
-        {
-            MoveSliderToPosition(CalculateTargetBallPosition());
-        }
-    }
-    private void SetPoolChargeSliderValue()
-    {
-        if (isMouseButtonDown)
-        {
-            poolChargeSlider.value = poolShooter.chargeValue;
-        }
-    }
+    {  
+        MoveSliderToPosition(CalculateTargetBallPosition());
+    } 
     private void SetChargeSliderVisible(bool active) => poolChargeSlider.gameObject.SetActive(active);
     private void MoveSliderToPosition(Vector2 position) => poolChargeSlider.transform.position = new Vector2(position.x, position.y + chargeSliderOffset);
+    private void SetPoolChargeSliderValue(float value) => poolChargeSlider.value = value;
     private Vector2 CalculateTargetBallPosition()
     {
-        PoolBallController targetBall = PoolCollisionManager.Instance.targetBall;
+        PoolBallCollider targetBall = PoolCollisionManager.Instance.targetBall;
         Vector2 targetBallPosition = mainCamera.WorldToScreenPoint(targetBall.transform.position);
         return targetBallPosition;
     }

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolShooter : MonoBehaviour
+public class PoolShootController : MonoBehaviour
 {
     [SerializeField] PoolInputManager poolInputManager;
+    
     private Camera mainCamera;
  
     public float chargeValue { private set; get; }
@@ -41,16 +42,18 @@ public class PoolShooter : MonoBehaviour
     }
     private void Shoot()
     {
-        PoolBallController targetBall = PoolCollisionManager.Instance.targetBall;
+        PoolBallCollider targetBall = PoolCollisionManager.Instance.targetBall;
 
         Vector2 ballPosition = targetBall.transform.position;
         Vector2 startPosition = mainCamera.ScreenToWorldPoint(PoolInputManager.mousePosition);
-        Vector2 mouseBallVector = ballPosition - startPosition;
+        Vector2 mouseBallVectorNormalized = (ballPosition - startPosition).normalized;
+
         float baseSpeed = 1f;
         float speed = baseSpeed + chargeValue * ballShootSpeed;
-
-        targetBall.SetDirection(mouseBallVector.normalized * speed);
+        
+        targetBall.directionVector =  mouseBallVectorNormalized * speed;
     }
+    
     private void PoolInputManager_OnMouseClick(object sender, System.EventArgs e)
     {
         isMouseButtonDown = true;
