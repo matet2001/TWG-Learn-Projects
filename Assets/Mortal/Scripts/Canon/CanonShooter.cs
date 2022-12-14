@@ -26,7 +26,6 @@ public class CanonShooter : MonoBehaviour
 
         CanonProjectileController newProjectileController = CanonProjectileManager.CreateProjectile(ductEndPosition, projectileSpeed, direction);
         newProjectileController.transform.SetParent(projectileCollector);
-        CanonProjectileManager.RandomizeWind();
 
         CollisionManager.Instance.AddToCollidableList(newProjectileController);
     }

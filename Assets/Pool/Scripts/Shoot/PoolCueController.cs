@@ -5,6 +5,7 @@ using UnityEngine;
 public class PoolCueController : MonoBehaviour
 {
     [SerializeField] PoolInputManager poolInputManager;
+    [SerializeField] PoolGameLoopController poolGameLoopController;
 
     private LineRenderer lineRenderer;
     private Camera mainCamera;
@@ -28,6 +29,8 @@ public class PoolCueController : MonoBehaviour
     {
         poolInputManager.OnMouseClick += PoolInputManager_OnMouseClick;
         poolInputManager.OnMouseRelease += PoolInputManager_OnMouseRelease;
+
+        poolGameLoopController.OnGameEndStart += PoolGameLoopController_OnGameEndStart;
     }
     private void Update()
     {
@@ -48,16 +51,24 @@ public class PoolCueController : MonoBehaviour
             Vector2 minusDistanceVector = mouseBallVector.normalized * (ballRadius * distanceFromBall);
             
             lineRenderer.SetPosition(0, startPosition + minusDistanceVector);
-            lineRenderer.SetPosition(1, endPosition - minusDistanceVector);     
+            lineRenderer.SetPosition(1, endPosition - minusDistanceVector);
+
+            //targetBall.flashController.StartFlashing(Color.red, 2f);
         }
     }
 
-    private void PoolInputManager_OnMouseClick(object sender, System.EventArgs e)
+    private void PoolInputManager_OnMouseClick()
     {
         isMouseButtonDown = true;
         lineRenderer.enabled = true;
     }
-    private void PoolInputManager_OnMouseRelease(object sender, System.EventArgs e)
+    private void PoolInputManager_OnMouseRelease()
+    {
+        isMouseButtonDown = false;
+        lineRenderer.enabled = false;
+        //PoolCollisionManager.Instance.targetBall.flashController.StopFlashState();
+    }
+    private void PoolGameLoopController_OnGameEndStart(string arg1, int arg2)
     {
         isMouseButtonDown = false;
         lineRenderer.enabled = false;

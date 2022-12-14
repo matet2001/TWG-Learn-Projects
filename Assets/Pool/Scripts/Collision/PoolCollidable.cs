@@ -14,7 +14,6 @@ public abstract class PoolCollidableCircle : PoolCollidable
     {
         radius = GetComponent<SpriteRenderer>().bounds.extents.x;
     }
-
     public static bool CalculateCircleCollision(PoolCollidableCircle circle, PoolCollidableCircle otherCircle)
     {
         float circleRadius = circle.radius;

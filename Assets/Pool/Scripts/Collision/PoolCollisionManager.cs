@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PoolCollisionManager : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class PoolCollisionManager : MonoBehaviour
     public PoolBallCollider targetBall;
     [SerializeField] PoolGameLoopController poolGameLoopController;
     [SerializeField] PoolBallCollider[] poolBallColliderArray;
-    [SerializeField] PoolWallController[] poolWallControllerArray;
-    [SerializeField] PoolHoleController[] poolHoleControllerArray;
+    [SerializeField] PoolWallCollider[] poolWallControllerArray;
+    [SerializeField] PoolHoleCollider[] poolHoleControllerArray;
 
     private List<PoolBallCollider> ballColliderTempList;
 
@@ -28,6 +29,7 @@ public class PoolCollisionManager : MonoBehaviour
         ballColliderTempList = new List<PoolBallCollider>();
         collisionCheckFrequencyMax = collisionCheckFrequency;
     }
+    #region CheckCollisions
     private void Update()
     {
         CheckForCollision();
@@ -39,12 +41,12 @@ public class PoolCollisionManager : MonoBehaviour
          
         foreach (PoolBallCollider ballCollider in poolBallColliderArray)
         {
-            BallToBallCollision(ballCollider);
-            WallToBallCollision(ballCollider);
-            HoleToBallCollision(ballCollider);
+            CheckBallToBallCollision(ballCollider);
+            CheckWallToBallCollision(ballCollider);
+            CheckHoleToBallCollision(ballCollider);
         }
     }
-    private void BallToBallCollision(PoolBallCollider ballCollider)
+    private void CheckBallToBallCollision(PoolBallCollider ballCollider)
     {
         if(ballColliderTempList.Count < 1) ballColliderTempList = poolBallColliderArray.ToList();
         ballColliderTempList.Remove(ballCollider);
@@ -53,33 +55,42 @@ public class PoolCollisionManager : MonoBehaviour
         {
             if (ballCollider.CheckCollision(nextBallCollider))
             {
-                ballCollider.Collision(nextBallCollider);
-                nextBallCollider.Collision(ballCollider);
+                ballCollider.HandleBallCollision(nextBallCollider);
+                ballCollider.flashController.Flash(Color.green, 0.2f);
+                nextBallCollider.HandleBallCollision(ballCollider);
+                nextBallCollider.flashController.Flash(Color.red, 0.2f);
+
+                SoundManager.PlaySound("_BallHitSound", ballCollider.transform.position);
 
                 ResetCollisionFrequencyTimer();
             }
         } 
     }
-    private void WallToBallCollision(PoolBallCollider ballCollider)
+    private void CheckWallToBallCollision(PoolBallCollider ballCollider)
     {
-        foreach (PoolWallController wallController in poolWallControllerArray)
+        foreach (PoolWallCollider wallController in poolWallControllerArray)
         {
             if (!wallController.CheckCollision(ballCollider)) continue;
 
             Vector2 normalDirectionVector = wallController.CalculateNormalDirectionVector(ballCollider);
-            ballCollider.Collision(normalDirectionVector);
+            ballCollider.HandleWallCollision(normalDirectionVector);
+            ballCollider.flashController.Flash(Color.green, 0.2f);
+            wallController.flashController.Flash(Color.red, 0.2f);
+
+            SoundManager.PlaySound("_WallHitSound", ballCollider.transform.position);
+
             ResetCollisionFrequencyTimer();
         }
     }
-    private void HoleToBallCollision(PoolBallCollider ballCollider)
+    private void CheckHoleToBallCollision(PoolBallCollider ballCollider)
     {
         if (!ballCollider.shouldCheckHoleCollision) return;
             
-        foreach (PoolHoleController holeController in poolHoleControllerArray)
+        foreach (PoolHoleCollider holeController in poolHoleControllerArray)
         {
             if (!holeController.CheckCollision(ballCollider)) continue;
 
-            ballCollider.Collision();
+            ballCollider.HandleHoleCollision();
             ResetCollisionFrequencyTimer();
 
             bool isWin = ballCollider != targetBall;
@@ -88,6 +99,8 @@ public class PoolCollisionManager : MonoBehaviour
         }
 
     }
+    #endregion
+    #region Collision Frequency Timer
     private void CountDownCollisionCheckFrequency()
     {
         if (collisionCheckFrequency > 0f)
@@ -97,5 +110,6 @@ public class PoolCollisionManager : MonoBehaviour
     private void ResetCollisionFrequencyTimer()
     {
         collisionCheckFrequency = collisionCheckFrequencyMax;
-    }  
+    }
+    #endregion
 }

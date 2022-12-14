@@ -14,6 +14,10 @@ public class CanonProjectileManager : MonoBehaviour
         wind = UnityEngine.Random.Range(-1f, 1f);
         OnWindValueChange?.Invoke(wind);
     }
+    private void Start()
+    {
+        RandomizeWind();
+    }
     public static CanonProjectileController CreateProjectile(Vector2 position, float speed, Vector2 direction)
     {
         GameObject projectilePrefab = Resources.Load("PfCanonProjectile") as GameObject;
@@ -22,6 +26,9 @@ public class CanonProjectileManager : MonoBehaviour
         CanonProjectileController newProjectileController = newProjectile.GetComponent<CanonProjectileController>();
         newProjectileController.SetSpeed(speed);
         newProjectileController.SetDirection(direction);
+        newProjectileController.wind = wind;
+
+        RandomizeWind();
         return newProjectileController;
     } 
 }

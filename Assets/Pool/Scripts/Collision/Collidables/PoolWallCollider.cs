@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolWallController : PoolCollidable
+public class PoolWallCollider : PoolCollidable
 {
     public float width { protected set; get; }
     public float height { protected set; get; }
+
+    public FlashController flashController;
 
     public enum wallDirectionEnum { vertical, horizontal};
     public wallDirectionEnum wallDirection;
@@ -27,6 +29,7 @@ public class PoolWallController : PoolCollidable
 
         return distanceFromWall < ballRadius;
     }
+    #region Calculate Collision Info With Ball
     private float GetDistanceFromBall(PoolBallCollider ballController)
     {
         Vector3 ballCenter = ballController.transform.position;
@@ -37,13 +40,6 @@ public class PoolWallController : PoolCollidable
         Vector2 triangleBVertex = ballCenter;
         Vector2 triangleCVertex = (wallDirection == wallDirectionVertical) ? new Vector2(triangleBVertex.x, triangleAVertex.y) : new Vector2(triangleAVertex.x, triangleBVertex.y);
         Vector2 triangleASide = triangleBVertex - triangleCVertex;
-
-        //if (showDebugLines && wallController == poolWallControllerArray[0] && ballController == targetBall)
-        //{
-        //    Debug.DrawLine(triangleAVertex, triangleBVertex, Color.red);
-        //    Debug.DrawLine(triangleAVertex, triangleCVertex, Color.blue);
-        //    Debug.DrawLine(triangleBVertex, triangleCVertex, Color.green);
-        //}
 
         Vector2 normalDirectionVector = CalculateNormalDirectionVector(ballController);
         float distance = triangleASide.magnitude - GetSpriteSideSizeAtDirection(normalDirectionVector);
@@ -80,4 +76,5 @@ public class PoolWallController : PoolCollidable
   
         return returnDirection;
     }
+    #endregion
 }

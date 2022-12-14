@@ -8,8 +8,8 @@ public class PoolGameLoopController : MonoBehaviour
     [SerializeField] int gameEndDelay = 3;
 
     public event Action<string, int> OnGameEndStart;
-    public event EventHandler OnGameEnd;
-    public event EventHandler OnGameRestart;
+    public event Action OnGameEnd;
+    public event Action OnGameRestart;
 
     public void StartGameEnd(bool isWin)
     {
@@ -21,10 +21,10 @@ public class PoolGameLoopController : MonoBehaviour
     private IEnumerator GameEndCountDown()
     {
         yield return new WaitForSeconds(gameEndDelay);
-        OnGameEnd?.Invoke(this, EventArgs.Empty);
+        OnGameEnd?.Invoke();
     }
     public void TriggerOnGameRestart()
     {
-        OnGameRestart?.Invoke(this, EventArgs.Empty);
+        OnGameRestart?.Invoke();
     }
 }

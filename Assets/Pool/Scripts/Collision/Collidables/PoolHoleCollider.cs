@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolHoleController : PoolCollidableCircle
+public class PoolHoleCollider : PoolCollidableCircle
 {
     [field:SerializeField] public static float holeEnterSpeedMax = 10f;
     

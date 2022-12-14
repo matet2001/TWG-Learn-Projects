@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CanonProjectileController : CollidableProjectile
 {
+    public float wind { private get; set; }
+    
     private void Update()
     {
         Move();
@@ -12,7 +14,7 @@ public class CanonProjectileController : CollidableProjectile
     private void ApplieForces()
     {
         float valueDiviner = 1000f;
-        float windValue = CanonProjectileManager.wind / valueDiviner;
+        float windValue = wind / valueDiviner;
         float gravityValue = CanonProjectileManager.gravity / valueDiviner;
 
         direction = new Vector2(direction.x + windValue, direction.y - gravityValue);

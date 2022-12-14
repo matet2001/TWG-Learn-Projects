@@ -7,8 +7,8 @@ public class PoolInputManager : MonoBehaviour
 {
     [SerializeField] PoolGameLoopController poolGameLoopController;
     
-    public event EventHandler OnMouseClick;
-    public event EventHandler OnMouseRelease;
+    public event Action OnMouseClick;
+    public event Action OnMouseRelease;
     
     public bool isMouseButtonDown { private set; get; }
     public static Vector2 mousePosition { private set; get; }
@@ -36,8 +36,8 @@ public class PoolInputManager : MonoBehaviour
     {
         if(shouldReceiveInput)
         {
-            if (Input.GetMouseButtonDown(0)) OnMouseClick?.Invoke(this, EventArgs.Empty);
-            if (Input.GetMouseButtonUp(0)) OnMouseRelease?.Invoke(this, EventArgs.Empty);
+            if (Input.GetMouseButtonDown(0)) OnMouseClick?.Invoke();
+            if (Input.GetMouseButtonUp(0)) OnMouseRelease?.Invoke();
         } 
     }
     private void LogMousePosition()
@@ -45,11 +45,11 @@ public class PoolInputManager : MonoBehaviour
         if (isMouseButtonDown) mousePosition = Input.mousePosition;
     }
 
-    private void PoolInputManager_OnMouseClick(object sender, EventArgs e)
+    private void PoolInputManager_OnMouseClick()
     {
         isMouseButtonDown = true;
     }
-    private void PoolInputManager_OnMouseRelease(object sender, EventArgs e)
+    private void PoolInputManager_OnMouseRelease()
     {
         isMouseButtonDown = false;
     }
@@ -57,7 +57,7 @@ public class PoolInputManager : MonoBehaviour
     {
         shouldReceiveInput = false;
     }
-    private void PoolGameLoopController_OnGameRestart(object sender, EventArgs e)
+    private void PoolGameLoopController_OnGameRestart()
     {
         shouldReceiveInput = true;
     }

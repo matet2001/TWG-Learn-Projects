@@ -14,13 +14,14 @@ public class PoolBallCollider : PoolCollidableCircle
 
     [HideInInspector]
     public bool shouldCheckHoleCollision = true;
+    public FlashController flashController;
 
     public override bool CheckCollision(PoolBallCollider ballCollider)
     {
         return CalculateCircleCollision(this, ballCollider);
     }
     #region Ball Collision
-    public void Collision(PoolBallCollider otherBallCollider)
+    public void HandleBallCollision(PoolBallCollider otherBallCollider)
     {
         directionBeforeCollision = directionVector;
         Vector2 reflectDirectionVector = CalculateReflectDirectionVector(otherBallCollider);     
@@ -44,6 +45,8 @@ public class PoolBallCollider : PoolCollidableCircle
         Vector2 tangentVector = new Vector2(-normalVector.y, normalVector.x);
         
         Vector2 ownForceVector = Vector2.Dot(directionBeforeCollision, tangentVector) * tangentVector;
+
+        flashController.Flash(Color.red, 0.1f);
         return ownForceVector;
     }
     public Vector2 CalculateForceGiveToOtherBall(Vector2 otherPosition)
@@ -53,11 +56,12 @@ public class PoolBallCollider : PoolCollidableCircle
         Vector2 normalVector = (otherPosition - (Vector2)transform.position).normalized;
         Vector2 forceGiveToOtherBall = Vector2.Dot(directionBeforeCollision, normalVector) * normalVector;
 
+
         return forceGiveToOtherBall;
     }
     #endregion
     #region Wall Collision
-    public void Collision(Vector2 normalVector)
+    public void HandleWallCollision(Vector2 normalVector)
     {
         Vector2 reflectVector = Vector2.Reflect(directionVector, normalVector);
 
@@ -67,11 +71,10 @@ public class PoolBallCollider : PoolCollidableCircle
     }
     #endregion
     #region Hole Collision
-    public void Collision()
+    public void HandleHoleCollision()
     {
         shouldCheckHoleCollision = false;
         moveController.TurnOff();
     }
     #endregion
-    
 }

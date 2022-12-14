@@ -54,10 +54,6 @@ public class KnobRotationController : MonoBehaviour
 
         return differenceInUnit;
     }
-    //private static float ConvertToSimpleAngle(float signedAngle)
-    //{
-    //    return (signedAngle > 0) ? 360 - signedAngle : -signedAngle;
-    //}
     private float ConvertToUnit(float value) => unitPerTurn / (360f / value); 
     private void TryRotate(float targetRotation, float nextUnitAmmount)
     {

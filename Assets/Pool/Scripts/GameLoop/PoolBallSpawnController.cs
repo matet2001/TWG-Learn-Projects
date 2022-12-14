@@ -22,6 +22,7 @@ public class PoolBallSpawnController : MonoBehaviour
     {
         poolGameLoopController.OnGameEnd += PoolGameLoopController_OnGameEnd;
     }
+    #region Random Spawning
     private void RandomizeBallPositions()
     {
         List<Vector2> spawnPositions = new List<Vector2>();
@@ -62,10 +63,12 @@ public class PoolBallSpawnController : MonoBehaviour
         Vector2 randomPosition = new Vector2(x, y);
         return randomPosition;
     }
-    
-    private void PoolGameLoopController_OnGameEnd(object sender, System.EventArgs e)
+    #endregion
+    #region Events
+    private void PoolGameLoopController_OnGameEnd()
     {
         RandomizeBallPositions();
         poolGameLoopController.TriggerOnGameRestart();
     }
+    #endregion
 }

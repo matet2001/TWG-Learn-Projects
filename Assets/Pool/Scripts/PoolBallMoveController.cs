@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PoolBallMoveController : MonoBehaviour
 {
     public Vector2 directionVector;
+    
     [SerializeField] float friction = 5f;
 
     private void Update()
@@ -35,4 +37,12 @@ public class PoolBallMoveController : MonoBehaviour
         gameObject.SetActive(false);
     }
     private void Stop() => directionVector = Vector2.zero;
+
+    private void FixedUpdate()
+    {
+        if (directionVector.magnitude > 0.1)
+        {
+            AfterImagePool.Instance.CreateAfterImageEffect(transform);           
+        }
+    }
 }

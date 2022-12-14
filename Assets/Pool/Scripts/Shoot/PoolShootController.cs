@@ -5,7 +5,8 @@ using UnityEngine;
 public class PoolShootController : MonoBehaviour
 {
     [SerializeField] PoolInputManager poolInputManager;
-    
+    [SerializeField] PoolGameLoopController poolGameLoopController;
+
     private Camera mainCamera;
  
     public float chargeValue { private set; get; }
@@ -14,6 +15,8 @@ public class PoolShootController : MonoBehaviour
 
     private bool isMouseButtonDown;
     private float timeForFullCharge = 2f;
+
+    private GameObject chargeSound;
 
     private void Start()
     {
@@ -24,6 +27,8 @@ public class PoolShootController : MonoBehaviour
     {
         poolInputManager.OnMouseClick += PoolInputManager_OnMouseClick;
         poolInputManager.OnMouseRelease += PoolInputManager_OnMouseRelease;
+
+        poolGameLoopController.OnGameEndStart += PoolGameLoopController_OnGameEndStart;
     }
     private void Update()
     {
@@ -53,14 +58,23 @@ public class PoolShootController : MonoBehaviour
         
         targetBall.directionVector =  mouseBallVectorNormalized * speed;
     }
-    
-    private void PoolInputManager_OnMouseClick(object sender, System.EventArgs e)
+    private void PoolInputManager_OnMouseClick()
     {
         isMouseButtonDown = true;
+        //PoolCollisionManager.Instance.targetBall.flashController.StartCharge(Color.yellow, timeForFullCharge);
+        PoolCollisionManager.Instance.targetBall.flashController.StartFlashing(Color.yellow, 1f);
+        chargeSound = SoundManager.PlaySound("_ChargeSound", Vector2.zero, true);
     }
-    private void PoolInputManager_OnMouseRelease(object sender, System.EventArgs e)
+    private void PoolInputManager_OnMouseRelease()
     {
         isMouseButtonDown = false;
         Shoot();
+        PoolCollisionManager.Instance.targetBall.flashController.StopFlashState();
+        SoundManager.StopSound(chargeSound);
+    }
+    private void PoolGameLoopController_OnGameEndStart(string arg1, int arg2)
+    {
+        isMouseButtonDown = false;
+        PoolCollisionManager.Instance.targetBall.flashController.StopFlashState();
     }
 }

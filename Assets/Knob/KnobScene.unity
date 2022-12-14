@@ -167,11 +167,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 326427237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd8da989bdeab0c41a663c5aefbaebbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e7bf02fede315a43bc48b52cee3a9d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _value: 0
-  stepPerTurn: 20
+  stepPerTurn: 5
   unitPerTurn: 100
   maxTurnAmmount: 3
 --- !u!114 &326427240

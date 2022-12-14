@@ -70,13 +70,13 @@ public class PoolCanvasManager : MonoBehaviour
     private void SetGameOverText(string text) => gameOverText.text = text;
     private void SetGameOverTimerText(int number) => gameOverTimerText.text = "Restart in " + number + " seconds";
 
-    private void PoolInputManager_OnMouseClick(object sender, System.EventArgs e)
+    private void PoolInputManager_OnMouseClick()
     {
         MoveSliderToPosition(CalculateTargetBallPosition());
         SetChargeSliderVisible(true);
         isMouseButtonDown = true;
     }
-    private void PoolInputManager_OnMouseRelease(object sender, System.EventArgs e)
+    private void PoolInputManager_OnMouseRelease()
     {
         SetChargeSliderVisible(false);
         isMouseButtonDown = false;
@@ -86,9 +86,10 @@ public class PoolCanvasManager : MonoBehaviour
         SetGameOverText(text);
         SetGameOverTimerText(number);
         SetGameOverTextsVisible(true);
+        SetChargeSliderVisible(false);
     }
-    private void PoolGameLoopController_OnGameEnd(object sender, System.EventArgs e)
+    private void PoolGameLoopController_OnGameEnd()
     {
-        SetGameOverTextsVisible(false);
+        SetGameOverTextsVisible(false);       
     }
 }
